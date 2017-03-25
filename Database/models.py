@@ -47,3 +47,17 @@ class Faculty(models.Model):
     update_date = models.DateField()
     active_flag=models.BooleanField()
 
+class DocumentType(models.Model):
+    document_id=models.IntegerField(primary_key=True)
+    document_type=models.CharField(max_length=50)
+    document_info=models.TextField(editable=True)
+    active_flag=models.BooleanField(default=True)
+
+class UserDocumentMap(models.Model):
+    document_type_fk=models.ForeignKey(DocumentType,primary_key=True)
+    user_id=models.ForeignKey(User)
+    document_info=models.TextField(editable=True)
+    user_comments=models.TextField(editable=True)
+    created_date=models.DateTimeField(auto_now=True)
+    uploaded_date=models.DateTimeField(auto_now=True)
+    active_flag = models.BooleanField(default=True)
