@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connect</title>
+</head>
+<body>
+{#    {% if  %}#}
+    <form action="{% url 'search' type_of_user%}" method="get" style="margin: 0">
+        <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+        <button id="search_submit" type="submit" >Submit</button>
+    </form>
+
+{#    <h1>{% url 'search_student' %}</h1>#}
+    {% if all_data %}
+        <form action="{% url 'view' type_of_user%}" method="post" style="margin: 0">
+            {% csrf_token %}
+            <table>
+                {% for data in all_data %}
+                    <tr>
+                        <td>
+                            Name :-  {{ data.user_id.first_name }} {{ data.user_id.last_name }} <br/>
+                            Email :-  {{ data.user_id.email }}
+
+                        </td>
+                        <td>
+                            {% if type_of_user == 'student' %}
+                                Course :- {{ data.course_name }} <br/>
+                                Branch :- {{ data.branch_name }} <br/>
+                                Admission Date :- {{ data.admission_date }} <br/>
+                                Department :- {{ data.department_name }}
+                            {% endif %}
+
+                            {% if type_of_user == 'alumni' %}
+                                Course :- {{ data.course_name }} <br/>
+                                Branch :- {{ data.branch_name }} <br/>
+                                Admission Date :- {{ data.admission_date }} <br/>
+                                Passout Date :- {{ data.passout_date }}
+                                Department :- {{ data.department_name }}
+                            {% endif %}
+
+                            {% if type_of_user == 'faculty' %}
+                                Department :- {{ data.department_name }}
+                            {% endif %}
+
+                        </td>
+
+                        {% if type_of_user == 'alumni' or type_of_user == 'faculty' %}
+                            <td>
+
+                                {% if type_of_user == 'alumni' %}
+                                    Current Organization :- {{ data.current_organization_name }}
+                                    Designation :- {{ data.designation }}
+                                    Role :- {{ data.role }}
+                                {% endif %}
+
+                                {% if type_of_user == 'faculty' %}
+                                    Designation :- {{ data.designation }}
+                                {% endif %}
+
+                            </td>
+                        {% endif %}
+
+                        <td>
+                            <button id="view" name="view" type="submit" value="{{ data.user_id }}">View</button>
+                        </td>
+
+                      </tr>
+
+                {% endfor %}
+            </table>
+        </form>
+    {% endif %}
+</body>
+</html>

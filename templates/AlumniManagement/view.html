@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connect</title>
+</head>
+<body>
+{#    {% if  %}#}
+    <form action="{% url 'search' type_of_user%}" method="get" style="margin: 0">
+        <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+        <button id="search_submit" type="submit" >Submit</button>
+    </form>
+    <h1>Jai Guru Umesh</h1>
+{#    <h1>{% url 'search_student' %}</h1>#}
+    {% if user_data %}
+        <form action="{% url 'view' type_of_user%}" method="post" style="margin: 0">
+            {% csrf_token %}
+
+            <table>
+                {% for data in user_data %}
+                    <tr>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            {{ data.user_id.first_name }} {{ data.user_id.last_name }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Email
+                        </td>
+                        <td>
+                            {{ data.user_id.email }}
+                        </td>
+
+                    </tr>
+
+                    {% if type_of_user == 'student' %}
+                        <tr>
+                            <td>
+                                Course
+                            </td>
+                            <td>
+                                {{ data.course_name }}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Branch
+                            </td>
+                            <td>
+                                {{ data.branch_name }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Admission Date
+                            </td>
+                            <td>
+                                {{ data.admission_date }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Department
+                            </td>
+                            <td>
+                                {{ data.department_name }}
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                    {% if type_of_user == 'alumni' %}
+
+                        <tr>
+                            <td>
+                                Course
+                            </td>
+                            <td>
+                                {{ data.course_name }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Branch
+                            </td>
+                            <td>
+                                {{ data.branch_name }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Admission Date
+                            </td>
+                            <td>
+                                {{ data.admission_date }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Passout Date
+                            </td>
+                            <td>
+                                {{ data.passout_date }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Department
+                            </td>
+                            <td>
+                                {{ data.department_name }}
+                            </td>
+                        </tr>
+
+                    {% endif %}
+
+                    {% if type_of_user == 'faculty' %}
+                        <tr>
+                            <td>
+                                Department
+                            </td>
+                            <td>
+                                {{ data.department_name }}
+                            </td>
+                        </tr>
+
+                    {% endif %}
+
+
+
+                    {% if type_of_user == 'alumni' or type_of_user == 'faculty' %}
+
+                        {% if type_of_user == 'alumni' %}
+                            <td>
+                                Current Organization
+                            </td>
+                            <td>
+                                {{ data.current_organization_name }}
+                            </td>
+
+                            <td>
+                                Designation
+                            </td>
+                            <td>
+                                {{ data.designation }}
+                            </td>
+
+                            <td>
+                                Role
+                            </td>
+                            <td>
+                                {{ data.role }}
+                            </td>
+
+                        {% endif %}
+
+                        {% if type_of_user == 'faculty' %}
+                            <td>
+                                Designation
+                            </td>
+                            <td>
+                                {{ data.designation }}
+                            </td>
+                        {% endif %}
+
+
+                    {% endif %}
+
+                        <td>
+                            <button id="view" name="view" type="submit" value="{{ data.user_id }}">View</button>
+                        </td>
+
+                      </tr>
+
+                {% endfor %}
+            </table>
+        </form>
+    {% endif %}
+</body>
+</html>
