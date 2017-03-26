@@ -61,3 +61,22 @@ class UserDocumentMap(models.Model):
     created_date=models.DateTimeField(auto_now=True)
     uploaded_date=models.DateTimeField(auto_now=True)
     active_flag = models.BooleanField(default=True)
+
+    class Event(models.Model):
+        event_name = models.CharField(max_length=100)
+        event_info = models.TextField(editable=True)
+        expiration_date = models.DateField(auto_now=True)
+        createdBy = models.ForeignKey(User)
+        event_news_flag = models.BooleanField()
+        created_date = models.DateField(auto_now=True)
+        updated_date = models.DateField(auto_now=True)
+        active_flag = models.BooleanField(default=True)
+
+    class Complaints(models.Model):
+        complaint_info = models.CharField(max_length=100)
+        acknowledge_flag = models.BooleanField(default=True)
+        solution_info = models.TextField(editable=True)
+        created_by = models.ForeignKey(User)
+        created_date = models.DateField(auto_now=True)
+        updated_date = models.DateField(auto_now=True)
+        active_flag = models.BooleanField(default=True)
