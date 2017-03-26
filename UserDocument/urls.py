@@ -4,7 +4,8 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^(student|faculty|alumni)/$', views.UserDocuments,name='UserDocuments'),
+     url(r'^$', views.UserDocuments,name='UserDocuments'),
+    #url(r'^(?P<document_id>[0-9]+)/$', views.UserDocuments,name='UserDocuments'),
     #url(r'^alumni/$', views.alumni,name='alumni'),
     # url(r'^alumni/search/$', views.search_alumni, name='search_alumni'),
     #url(r'^faculty/$', views.faculty,name='faculty'),
