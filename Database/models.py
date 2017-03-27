@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.urlresolvers import reverse
 
 
 class User(AbstractUser):
@@ -71,6 +72,13 @@ class Event(models.Model):
     created_date = models.DateField(auto_now=True)
     updated_date = models.DateField(auto_now=True)
     active_flag = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse('AlumniManagement:createEvent')
+
+    def __str__(self):
+        return self.event_name
+
 
 class Complaints(models.Model):
     complaint_info = models.CharField(max_length=100)
