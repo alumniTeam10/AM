@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+</head>
+<body>
+<h1>Welcome to Event Page</h1>
+<h2>List of Events:</h2>
+
+    {% if event_name %}
+     <table>
+        <thread>
+            <th>Event Name</th>
+            <th>Event Info</th>
+            <th>Event Created Date</th>
+        </thread>
+
+        {% for event in event_name %}
+        <tr>
+            <td>{{event.event_name}}</td>
+            <td>{{event.event_info}}</td>
+            <td>{{event.created_date}}</td>
+        </tr>
+        {% endfor %}
+     </table>
+    {% else %}
+        <p>No Events</p>
+    {% endif %}
+
+</body>
+</html>
