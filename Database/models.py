@@ -74,7 +74,7 @@ class Event(models.Model):
     active_flag = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return reverse('AlumniManagement:createEvent')
+        return reverse('event-list',kwargs={'pk':self.pk})
 
     def __str__(self):
         return self.event_name

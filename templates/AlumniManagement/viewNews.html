@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+</head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<body>
+<div class="container">
+<h1>Welcome to Latest News</h1>
+
+    {% if news_name %}
+    <div class="panel panel-default">
+     <table class="table">
+          <div class="panel-heading">List of News
+        <thread>
+            <th>News Name</th>
+            <th>News Info</th>
+            <th>News Created Date</th>
+        </thread>
+             <div class="panel-body">
+        {% for news in news_name %}
+        <tr>
+            <td>{{news.event_name}}</td>
+            <td>{{news.event_info}}</td>
+            <td>{{news.created_date}}</td>
+        </tr></div>
+        {% endfor %}
+              </div>
+     </table>
+  </div>
+    {% else %}
+        <p>No Events</p>
+    {% endif %}
+
+
+
+
+</body>
+</html>
