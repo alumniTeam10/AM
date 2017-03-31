@@ -10,6 +10,7 @@
      <form method="POST">
 
          {% csrf_token %}
+          <p>Are you sure you want to delete User "{{ object }}"?</p>
          <input type="submit" name="btn btn-primary" value="Yes , Delete">
          </form>
  </div>

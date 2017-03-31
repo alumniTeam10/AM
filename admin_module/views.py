@@ -1,15 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-
+from django.http import Http404
 from sympy.functions.elementary.complexes import re
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import  method_decorator
 from django.urls import reverse_lazy
-from Database.models import Event
-from  admin_module.forms import EventForm
+from Database.models import Event,User
+from  admin_module.forms import EventForm,UserForm
+from django.shortcuts import redirect
+from AlumniManagement import settings
 
 # Create your views here.
+class EventDelete(DeleteView):
+    model=Event
+    success_url = reverse_lazy("view-event")
 
 def post_event(request):
     event_list=Event.objects.all()
@@ -64,7 +69,69 @@ def form_name_view(request):
     return render(request,'AlumniManagement/event_formpage.html',{'form':form})
 
 
+def createUser(request):
+    form=UserForm()
+    if request.method =='POST':
+        form=UserForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return viewUsers(request)
+    return render(request,'AlumniManagement/user_formpage.html',{'form':form})
 
-class EventDelete(DeleteView):
-    model=Event
-    success_url = reverse_lazy('event-list')
+
+class UserDelete(DeleteView):
+    model = User
+    success_url = reverse_lazy("view-event")
+
+def viewEvent(request,pk):
+
+    if not request.user.is_authenticated:
+        return redirect(settings.LOGIN_URL, request.path)
+
+    try:
+        opportunity = Event.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        raise Http404("The Event you are searching for does not exists")
+
+    return render(
+        request,
+        'AlumniManagement/viewEvent.html'
+
+    )
+
+
+class EventUpdate(UpdateView):
+    news_event_flag = False
+    model = Event
+    fields = ['event_name','event_info']
+    template_name_suffix = '_update_form'
+
+
+    def get_success_url(self):
+        obj = super(EventUpdate,self).get_object(
+
+        )
+        if obj.event_news_flag==True:
+            print obj.event_info
+            success_url=reverse_lazy("view-event")
+        else:
+            success_url = reverse_lazy("view-news")
+        return success_url
+
+
+class UserUpdate(UpdateView):
+    model = User
+    #fields = __all__
+    form_class = UserForm
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy("view-users")
+
+
+def viewUsers(request):
+    user_list=User.objects.all()
+    userList=[]
+
+    for user in user_list:
+        userList.append(user)
+        user_dict={'user_name':userList}
+    return render(request,'AlumniManagement/viewUsers.html',context=user_dict)
