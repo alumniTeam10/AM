@@ -1,6 +1,7 @@
 from django import forms
 from django.core import validators
-from  Database.models import  Event,User
+from  Database.models import  Event,User,Student,Faculty,Alumni
+from django.forms.models import inlineformset_factory
 class EventForm(forms.ModelForm):
     class Meta():
         model=Event
@@ -22,3 +23,17 @@ class UserForm(forms.ModelForm):
         fields=['username','first_name','last_name','email','phone_number','user_type_flag']
 
 
+'''from Database.models import (
+User,
+Alumni,
+Student,
+Faculty
+)
+
+UserFormSet=inlineformset_factory(
+    User,
+    Student,fields=('department_name','branch_name','course_name','admission_date','create_date',
+                    'update_date','active_flag',)
+
+
+)'''

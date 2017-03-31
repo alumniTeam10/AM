@@ -27,6 +27,8 @@ class User(AbstractUser):
 
     user_type_flag = models.CharField(max_length=10,choices=USER_TYPE_FLAG_CHOICES, default=ALUMNI)
 
+
+
     def __str__(self):
         return self.username
 

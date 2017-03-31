@@ -1,16 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.http import Http404
 from sympy.functions.elementary.complexes import re
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import  method_decorator
 from django.urls import reverse_lazy
-from Database.models import Event,User
+from Database.models import Event,User,Student
 from  admin_module.forms import EventForm,UserForm
 from django.shortcuts import redirect
 from AlumniManagement import settings
-
+from django.forms import inlineformset_factory
 # Create your views here.
 class EventDelete(DeleteView):
     model=Event
@@ -89,7 +89,7 @@ def viewEvent(request,pk):
         return redirect(settings.LOGIN_URL, request.path)
 
     try:
-        opportunity = Event.objects.get(pk=pk)
+        event = Event.objects.get(pk=pk)
     except Event.DoesNotExist:
         raise Http404("The Event you are searching for does not exists")
 
@@ -118,7 +118,6 @@ class EventUpdate(UpdateView):
             success_url = reverse_lazy("view-news")
         return success_url
 
-
 class UserUpdate(UpdateView):
     model = User
     #fields = __all__
@@ -135,3 +134,21 @@ def viewUsers(request):
         userList.append(user)
         user_dict={'user_name':userList}
     return render(request,'AlumniManagement/viewUsers.html',context=user_dict)
+
+
+
+
+
+def manageUser(request,id):
+    user=User.objects.get(pk=id)
+    UserformSet=inlineformset_factory(User,Student,fields=('department_name','branch_name',))
+    if request.method=="POST":
+        formset=UserformSet(request.POST,request.FILES,instance=user)
+        if formset.is_valid():
+            formset.save()
+            success_url = reverse_lazy("view-users")
+            return success_url
+    else:
+           formset=UserformSet(instance=user)
+
+    return render(request,'AlumniManagement/user_update.html',{'formset':formset})
